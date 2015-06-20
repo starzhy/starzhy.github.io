@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<link rel="dns-prefetch" href="http://img.app.meitudata.com" />
+<title>Image and Imagine</title>
+<script src="http://js.app.meitudata.com/common/refreshRem.js"></script>
+<style>
+    *{margin: 0;padding: 0;}
+    html{font-size: 20px;-webkit-text-size-adjust:none;}
+    body{font-family:'helvetica neue',  'hiragino sans gb', 'Microsoft YaHei', 'SimSun',arial,tahoma,sans-serif;font-weight:normal;line-height:1.4;}
+    .upload{opacity: 0;position: absolute;}
+    .btn-upload{width: 80%;height:3rem;text-align: center;background-color: #ccc;font-size: .8rem;display: block;line-height:3rem;color: #666;margin:0 auto;border-radius: .3rem;}
+    .modal{position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);-moz-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);-o-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);}
+    .filter-list{width:100%;bottom: 10%;clear:both;}
+    .filter-item{float: left;padding:6px;background-color: #CBF5F9;color:#63796E;list-style-type: none;margin:5px;font-size: .7rem;}
+    .canvas{width: 100%}
+</style>
+</head>
+<body>
+    <label for="upload" class="btn-upload modal" id="btnUpload">上传图片</label>
+    <input type="file" name="" value="" accept="image/*" class="upload" id="upload">
+    <canvas id="canvas" class="canvas"></canvas>
+    <ul class="filter-list" id="filterList">
+    </ul>
+    
+<script src="http://js.app.meitudata.com/common/zepto/zepto-1.1.3.min.js"></script>
+<script src="js/webgl-image-filter.js"></script>
+<script>
+var canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d'),
+    image;
+var filter = new WebGLImageFilter();
+function loadImage(src){
+    image = new Image();
+    image.onload = function() {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        $('#btnUpload').hide();
+        ctx.drawImage(this,0,0);
+    };
+    image.src = src;
+}
+
+//loadImage('image.jpg')
+
+var filterList = [
+    {name: 'none'},
+    {name: 'negative'},
+    {name: 'brightness', args:[1.5]},
+    [{name: 'saturation', args:[1.2]}],
+    {name: 'contrast', args:[1.5]},
+    {name: 'hue', args:[180]},
+    {name: 'desaturate'},
+    {name: 'desaturateLuminance'},
+    {name: 'brownie'},
+    {name: 'sepia'},
+    {name: 'vintagePinhole'},
+    {name: 'kodachrome'},
+    {name: 'technicolor'},
+    {name: 'detectEdges'},
+    {name: 'sharpen'},
+    {name: 'emboss'},
+    {name: 'blur', args:[7]}
+];
+
+function applyFilter(i){
+    filter.reset();
+    if(filterList[i].length){
+        for(var j=0;j<filterList[i].length;j++){
+            filter.addFilter( filterList[i][j].name, filterList[i][j].args );
+        }
+    }else{
+        filter.addFilter( filterList[i].name, filterList[i].args );
+    }
+    
+    var filteredImage = filter.apply(image);
+    return filteredImage;
+}
+
+document.getElementById('upload').onchange = function (e){
+    if (typeof FileReader === 'undefined') {  
+        //不支持fileReader
+    }else{
+        var reader = new FileReader();  
+        reader.onload = function(e) {  
+            loadImage(e.target.result)
+        }  
+        reader.readAsDataURL(e.target.files[0]);
+        
+    } 
+}
+$(document.body).on('click','.filter-item',function(){
+    alert(2111)
+    var i = $(this).index();
+    alert(i+'ddd')
+    if(i>0){
+        var filteredImage = applyFilter(i);
+
+        ctx.drawImage(filteredImage,0,0);
+    }else{
+        ctx.drawImage(image,0,0);
+    }
+    
+});
+var $filterList = $('#filterList');
+$.each(filterList,function(index,filter){
+    var name='';
+    if(filter.length){
+        for(var i=0;i<filter.length;i++){
+            name+=filter[i].name+' '
+        }
+    }else{
+        name=filter.name;
+    }
+    var li = '<li class="filter-item">'+name+'</li>';
+    $filterList.append(li)
+})
+
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<link rel="dns-prefetch" href="http://img.app.meitudata.com" />
+<title>Image and Imagine</title>
+<script src="js/refreshRem.js"></script>
+<style>
+    *{margin: 0;padding: 0;}
+    html{font-size: 20px;-webkit-text-size-adjust:none;}
+    body{font-family:'helvetica neue',  'hiragino sans gb', 'Microsoft YaHei', 'SimSun',arial,tahoma,sans-serif;font-weight:normal;line-height:1.4;}
+    .upload{opacity: 0;position: absolute;}
+    .btn-upload{width: 80%;height:3rem;text-align: center;background-color: #ccc;font-size: .8rem;display: block;line-height:3rem;color: #666;margin:0 auto;border-radius: .3rem;}
+    .modal{position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);-moz-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);-o-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);}
+    .filter-list{position: fixed;width:100%;bottom: 10%;}
+    .filter-item{float: left;padding:10px;background-color: #CBF5F9;color:#63796E;list-style-type: none;margin-right: 10px;}
+    .rotate{ -webkit-transform:scale(.6) rotate(-6deg) translate(60px,60px);position: absolute;/*border:4px solid #ccc;*/}
+</style>
+</head>
+<body>
+    <label for="upload" class="btn-upload modal" id="btnUpload">上传图片</label>
+    <input type="file" name="" value="" accept="image/*" class="upload" id="upload">
+    <ul class="filter-list">
+        <li class="filter-item" action="filter1">老照片</li>
+        <li class="filter-item" action="filter2">画中画</li>
+        <li class="filter-item" action="filter2">阿宝色</li>
+    </ul>
+    <img src="image.jpg" id="image" alt="" style="width:100%;display:block;">
+<script src="js/zepto-1.1.3.min.js"></script>
+<script src="js/binaryajax.js"></script>
+<script src="js/exif.js"></script>
+<script src="js/canvasResize.js"></script>
+<script src="js/glfx.js"></script>
+<script>
+var canvas,texture,width,height;
+function loadImage(src){
+    var image = new Image();
+    image.onload = function() {
+        createCanvas(image);
+    };
+    image.src = src;
+}
+
+function createCanvas(image) {
+    // Create a texture from the image and draw it to the canvas
+    canvas = fx.canvas();
+    canvas.id='canvas';
+    texture = canvas.texture(image);
+    canvas.draw(texture).update();
+    width = canvas.width = image.width;
+    height=canvas.height = image.height;
+    $('#btnUpload').hide();
+    $(document.body).append(canvas);
+    var $canvas = $('#canvas');
+    $canvas.css('width','100%')
+
+}
+loadImage('image.jpg')
+
+var filter = {
+    filter1:function(){
+        
+        canvas.draw(texture).brightnessContrast(-0.1, 0).sepia(0.83).hueSaturation(0, 0.52).noise(0.05).update();
+
+    },
+    filter2:function(){
+       var $newCanvas = $('body').append('<canvas id="newCanvas" width="'+width+'" height="'+height+'" style="width:100%;"></canvas>')
+       canvas.draw(texture).lensBlur(25, 1, -2.68159).update();
+       $('#image').addClass('rotate').show();
+       var newCanvas = document.getElementById('newCanvas'),
+           newCtx = newCanvas.getContext('2d'),
+           newImage = document.getElementById('image');
+        newCtx.clearRect( 0, 0, width, height);
+       newCtx.drawImage(canvas,0,0);
+       newCtx.translate(width/2, height/2);
+       newCtx.rotate(-6*Math.PI/180);
+
+       var left = -0.3*width,
+           top  = -0.3*height,
+           ratio =.6;
+        var r = 2784/320;
+        console.log(r*60*0.6)
+        newCtx.translate(60*r*0.6, 60*r*0.6);
+        newCtx.drawImage(newImage,0,0,width,height,left,top,width*ratio,height*ratio);
+        
+    }
+}
+window.onload = function() {
+    //文件上传
+    document.getElementById('upload').onchange = function (e){
+        var file = e.target.files[0];
+        // CANVAS RESIZING
+        var reader = new FileReader();  
+        reader.onload = function(e) {  
+            $('#image').attr('src',e.target.result)
+            //loadImage(e.target.result)
+        }  
+        reader.readAsDataURL(e.target.files[0]);
+        canvasResize(file, {
+            width: 800,
+            crop: false,
+            quality: 100,
+            rotate: 0,
+            callback: function(data, width, height) {
+                var img = new Image();
+                $('#image').attr('src',data)
+                img.onload = function() {
+                   createCanvas(this);
+                  // $('#image').hide();
+                };
+                img.src= data;             
+            }
+        });
+        
+        
+    }
+};
+$('.filter-item').click(function(){
+    var action = $(this).attr('action');
+    filter[action]();
+});
+
+
+</script>
+
+</body>
+</html>
