@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<link rel="dns-prefetch" href="http://appzhy.meitu.com" />
+<title>任性拼图 V0.000001版</title>
+<script src="js/refreshRem.js"></script>
+<style>
+    *{margin: 0;padding: 0;}
+    @font-face {font-family: 'webfont';
+      src: url('//at.alicdn.com/t/224fv5jz0azto6r.eot'); /* IE9*/
+      src: url('//at.alicdn.com/t/224fv5jz0azto6r.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+      url('//at.alicdn.com/t/224fv5jz0azto6r.woff') format('woff'), /* chrome、firefox */
+      url('//at.alicdn.com/t/224fv5jz0azto6r.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url('//at.alicdn.com/t/224fv5jz0azto6r.svg#思源黑体-极细') format('svg'); /* iOS 4.1- */
+    }
+
+
+
+    .shscn{font-family: 'webfont'};
+    html{font-size: 20px;-webkit-text-size-adjust:none;}
+    body{font-family:'helvetica neue',  'hiragino sans gb', 'Microsoft YaHei', 'SimSun',arial,tahoma,sans-serif;font-weight:normal;line-height:1.6;background-color: #000;}
+    .example-img{width: 100%;}
+    .upload{opacity: 0;position: absolute;left:0;width:1px;height:1px;}
+    .btn-area{text-align: center;padding: 1rem .1rem;-webkit-box-sizing:border-box;width: 100%;overflow: hidden;}
+    .btn-upload,.btn-export{width: 7rem;height:2.5rem;text-align: center;background-color: #ccc;font-size: 1rem;display: inline-block;line-height:2.5rem;color: #666;margin:0 auto;border-radius: .3rem;padding: 0;margin: 0 .3rem;}
+    .modal{position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);-moz-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);-o-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);}
+    .filter-list{position: fixed;width:100%;bottom: 10%;display: none;}
+    .filter-item{float: left;padding:.5rem .6rem;background-color:#2D77A6;color:#DFE8E4;list-style-type: none;margin-right: .5rem;font-size: .8rem}
+    .rotate{ -webkit-transform:scale(.6) rotate(-6deg);position: absolute;/*border:4px solid #ccc;*/}
+    .hide{display: none;}
+    .logo{width: 100%;text-align: center;margin-top: 2rem;color: #ccc;}
+    .f30{font-size: 1.4rem;}
+    .f12{font-size: .6rem;}
+    .blue{color: #2B83BA;}
+    .result-img{position: absolute;width: 100%;top: 0;left:0;z-index: 1;}
+
+
+
+    .button {
+      text-decoration: none;
+      font-size:1rem;
+      font-weight: bold;
+      text-shadow: rgba(255,255,255,.5) 0 1px 0;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      padding: .4em 1.2em .3em 1.2em;
+      margin: 0 .5em;
+      display: inline-block;
+      position: relative;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
+      border-top: 1px solid rgba(255,255,255,0.8);
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      background-image: -webkit-gradient(radial, 50% 0, 100, 50% 0, 0, from( rgba(255,255,255,0) ), to( rgba(255,255,255,0.7) )), url(noise.png);
+      background-image: -moz-radial-gradient(top, ellipse cover, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%), url(noise.png);
+      background-image: gradient(radial, 50% 0, 100, 50% 0, 0, from( rgba(255,255,255,0) ), to( rgba(255,255,255,0.7) )), url(noise.png);
+      -webkit-transition: background .2s ease-in-out;
+      -moz-transition: background .2s ease-in-out;
+      transition: background .2s ease-in-out;
+      color: hsl(0, 0%, 40%) !important;
+      background-color: hsl(0, 0%, 75%);
+      -webkit-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+      -moz-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+      box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(0, 0%, 60%) 0 .1em 3px, hsl(0, 0%, 45%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+    }
+    .brackets, .brackets.glossy:after, .brackets.glass:after {
+      border-top: none;
+      -webkit-border-radius: .5em / 1em;
+      -moz-border-radius: .5em / 1em;
+      border-radius: .5em / 1em;
+    }
+    .button.blue {
+      color: hsl(208, 50%, 40%) !important;
+      background-color: hsl(208, 100%, 75%);
+      -webkit-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(208, 50%, 55%) 0 .1em 3px, hsl(208, 50%, 40%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+      -moz-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(208, 50%, 55%) 0 .1em 3px, hsl(208, 50%, 40%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+      box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(208, 50%, 55%) 0 .1em 3px, hsl(208, 50%, 40%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+    }
+    .button.pink {
+      color: hsl(340, 100%, 30%) !important;
+      background-color: hsl(340, 100%, 75%);
+      -webkit-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(340, 70%, 50%) 0 .1em 3px, hsl(340, 80%, 40%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+      -moz-box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(340, 70%, 50%) 0 .1em 3px, hsl(340, 80%, 40%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+      box-shadow: inset rgba(255,254,255,0.6) 0 0.3em .3em, inset rgba(0,0,0,0.15) 0 -0.1em .3em, /* inner shadow */ hsl(340, 70%, 50%) 0 .1em 3px, hsl(340, 80%, 40%) 0 .3em 1px, /* color border */ rgba(0,0,0,0.2) 0 .5em 5px;
+    }
+</style>
+</head>
+<body>
+    <img src="images/pic.jpg" width="100%" class="example-img" alt="" id="example">
+    <div class="btn-area" id="btnArea">
+        <label for="upload" class="button blue brackets shscn" id="btnUpload">上传图片</label>
+        <label class="button pink brackets shscn" id="btnExport" style="display:none;">导出图片</label>
+        <input type="file" name="" value="" accept="image/*" class="upload" id="upload">
+    </div>
+    <ul class="filter-list" id="filterList">
+        <li class="filter-item" action="filter1">画中画--1</li>
+        <li class="filter-item" action="filter2">画中画--2</li>
+        <li class="filter-item" action="filter2">画中画--3</li>
+    </ul>
+    <div class="logo shscn"><span class="f30 blue">这里是LOGO</span><span class="f12"></span><br/>可以用来制作朋友圈封面，思密达</div>
+    <img src="images/image.jpg" id="image" alt="" style="width:100%;display:none;">
+    <div class="hide">
+        任性的海报拼图，分享到朋友圈，我会更快更新哦，上传图片，导出图片，测试版了小婊砸，老子正在测试好吗，最讨厌的小婊砸，网页版，这个会好玩吗，1秒钟做出海报大片，就问你要不要这里是LOGO
+    </div>
+<script src="js/zepto-1.1.3.min.js"></script>
+<script src="js/binaryajax.js"></script>
+<script src="js/exif.js"></script>
+<script src="js/canvasResize.js"></script>
+<script src="js/glfx.js"></script>
+<script>
+var canvas,texture,width,height,$canvas,$btnArea = $('#btnArea'),$btnExport=$('#btnExport');
+var EL = {
+    filterList:$('#filterList'),
+    filterItem:$('.filter-item')
+}
+function loadImage(src){
+    var image = new Image();
+    image.onload = function() {
+        createCanvas(image);
+    };
+    image.src = src;
+}
+
+function createCanvas(image) {
+    // Create a texture from the image and draw it to the canvas
+    canvas = fx.canvas();
+    canvas.id='canvas';
+    texture = canvas.texture(image);
+    canvas.draw(texture).update();
+    width = canvas.width = image.width;
+    height=canvas.height = image.height;
+    $(document.body).append(canvas);
+    $canvas = $('#canvas');
+    $canvas.css('width','100%')
+
+}
+//loadImage('image.jpg')
+
+var filter = {
+    filter1:function(){
+       
+       canvas.draw(texture).lensBlur(25, 0.5, -1.49159).vignette(0.38, 0.5).update();
+
+        /*绘制画中画 小图*/
+        var smallCanvas = document.createElement('canvas'),
+            sCtx = smallCanvas.getContext('2d'),
+            img = document.getElementById('image');
+        smallCanvas.width=width;
+        smallCanvas.height=height;
+        sCtx.drawImage(img,0,0);
+        sCtx.strokeStyle = '#dad9d9'; 
+        sCtx.lineWidth = 26;        
+        sCtx.strokeRect(0, 0,width,height);
+
+        /*绘制画中画 结果图*/
+        $('#resultCanvas').remove();
+        $('#resultImg').remove();
+        var resultCanvas = document.createElement('canvas'),
+            rctx = resultCanvas.getContext('2d');
+        resultCanvas.id = 'resultCanvas';
+        resultCanvas.width=width;
+        resultCanvas.height=height;
+        resultCanvas.style.width='100%';
+        rctx.clearRect( 0, 0, width, height);
+        rctx.drawImage(canvas,0,0);
+
+        rctx.translate(width/2, height/2);
+        rctx.rotate(-10*Math.PI/180);
+        var left = -0.3*width,
+           top  = -0.3*height,
+           ratio =.6;
+        rctx.drawImage(smallCanvas,0,0,width,height,left,top,parseInt(width*ratio),parseInt(height*ratio));
+        $('body').prepend(resultCanvas);
+        $canvas.remove();
+        $btnArea.show();
+        $('#btnExport').css('display','inline-block');
+        var exportImg = resultCanvas.toDataURL("image/png");//.replace("image/png", "image/octet-stream")
+        $('body').append('<img src="'+exportImg+'" width="100%" class="result-img"/>')
+
+    }
+}
+window.onload = function() {
+    //文件上传
+    document.getElementById('upload').onchange = function (e){
+        var file = e.target.files[0];
+        // CANVAS RESIZING
+        canvasResize(file, {
+            width: 800,
+            crop: false,
+            quality: 100,
+            rotate: 0,
+            callback: function(data, width, height) {
+                $('#image').attr('src',data);
+                $btnArea.hide();
+                $('#image')[0].onload = function() {
+                   createCanvas(this);
+                   $('#example').hide();
+                   filter.filter1();
+                };       
+            }
+        });
+        
+        
+    }
+};
+$('.filter-item').click(function(){
+    var action = $(this).attr('action');
+    filter[action]();
+});
+
+$btnExport.tap(function(){
+    alert('长按上方图片，直至弹出下方菜单啊！！！！思密达￥%#@……%￥#！@#！#￥！￥#……%￥')
+})
+</script>
+
+</body>
+</html>
