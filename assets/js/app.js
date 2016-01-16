@@ -1,23 +1,22 @@
-import React from 'react'
+import React, {Component, PropTypes} from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, Link, IndexLink, browserHistory } from 'react-router'
 import Index from './index'
 import About from './about'
 
-class App extends React.Component{
+class App extends Component{
     constructor(props) { 
       super(props);
-      this.state = {
-        
-      }
+      this.state = { }
     }
     componentDidMount() {
       
     }
 
-    //切换页面
+
     switchPage(page){
-      this.setState({ active:page });
+      alert(22)
+      location.href = page;
     }
 
     render(){
