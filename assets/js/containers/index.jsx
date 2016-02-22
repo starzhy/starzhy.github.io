@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './component/header'
+import Micro from '../component/micro.jsx'
 
 class Index extends React.Component {
     constructor(props) {
@@ -11,10 +11,7 @@ class Index extends React.Component {
     }
     render() {
         return <div>
-            <div className="bg-body"></div>
-            <div className="wrapper"> 
-                <Header/>
-            </div>
+            <Micro />
         </div>;
     }
 }

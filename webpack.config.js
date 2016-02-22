@@ -7,7 +7,7 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    './assets/js/app.js'
+    './assets/js/containers/app.js'
   ],
   output: {
     path: 'view/js/',
@@ -26,6 +26,7 @@ module.exports = {
   },
   module: {
     loaders: [
+        { test: /\.css$/, loader: "style-loader!css-loader" },
         {
           test: /\.(js|jsx)$/,
           loaders: ['react-hot','babel'],

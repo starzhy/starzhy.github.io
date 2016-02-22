@@ -5,9 +5,14 @@ class Header extends React.Component {
         super(props);
         this.displayName = 'Header';
     }
+    handleTouch(){
+        alert(2)
+    }
     render() {
         return <div>
-            <header className="header modal"><h1 className="logo">ZHY.im</h1> <span className="des">coming soon...</span></header>
+            <header className="header">
+                <h1 className="logo" onTouchStart={this.handleTouch}>ZHY.im</h1>
+            </header>
         </div>;
     }
 }

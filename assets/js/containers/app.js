@@ -1,10 +1,14 @@
-import React, {Component, PropTypes} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, Link, IndexLink, browserHistory } from 'react-router'
+import Header from '../component/header'
 import Index from './index'
 import About from './about'
+import reducers from '../reducers/record.js'
+import '../../css/main.css'
 
-class App extends Component{
+
+class App extends React.Component{ 
     constructor(props) { 
       super(props);
       this.state = { }
@@ -15,18 +19,23 @@ class App extends Component{
 
 
     switchPage(page){
-      alert(22)
       location.href = page;
     }
 
     render(){
         return (
-            <div className="wrapper">
-              <Index />
+            <div>
+                <div className="bg-body"></div>
+                <div className="wrapper">
+                  <Header />
+                  <Index />
+                </div>
             </div>
           )
     }
 }
+
+
 
 
 const NoMatch = React.createClass({
@@ -38,7 +47,6 @@ const NoMatch = React.createClass({
       )
     }
 })
-
 
 
 
