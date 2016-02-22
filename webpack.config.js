@@ -5,8 +5,8 @@ var node_modules = path.resolve(__dirname, 'node_modules');
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
+    // 'webpack-dev-server/client?http://localhost:8080',
+    // 'webpack/hot/only-dev-server',
     './assets/js/containers/app.js'
   ],
   output: {
