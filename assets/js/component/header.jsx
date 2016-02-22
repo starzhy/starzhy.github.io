@@ -11,7 +11,7 @@ class Header extends React.Component {
     render() {
         return <div>
             <header className="header">
-                <h1 className="logo" onTouchStart={this.handleTouch}>ZHY.im</h1>
+                <h1 className="logo" onTouchStart={this.handleTouch}>那个码农</h1>
             </header>
         </div>;
     }
