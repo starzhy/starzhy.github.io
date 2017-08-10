@@ -5,9 +5,7 @@ class Header extends React.Component {
         super(props);
         this.displayName = 'Header';
     }
-    handleTouch(){
-        alert(2)
-    }
+    handleTouch() {}
     render() {
         return <div>
             <header className="header">
@@ -18,4 +16,3 @@ class Header extends React.Component {
 }
 
 export default Header;
-

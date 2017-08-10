@@ -2,6 +2,12 @@
   "name": "zhy.im",
   "version": "1.0.0",
   "description": "en...",
+  "keywords": [
+    "mapp",
+    "html5",
+    "h5",
+    "weixin"
+  ],
   "main": "app.js",
   "directories": {
     "test": "test"
@@ -14,7 +20,7 @@
     "url": "git+https://github.com/starzhy/starzhy.github.io.git"
   },
   "author": "ZHY",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/starzhy/starzhy.github.io/issues"
   },
